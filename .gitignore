@@ -2,3 +2,4 @@
 *.zip
 *.gresource
 node_modules
+.coverage/

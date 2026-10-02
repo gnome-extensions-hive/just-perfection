@@ -37,3 +37,20 @@
 - Initial language translation for current languages has been translated via online services. Feel free to edit that.
 
 *This file may be updated in the future. Any change should be applied to all files in this repository.*
+
+## Unit Tests
+
+Run the dependency-free unit tests with Node.js 22 or newer:
+
+```bash
+npm test
+npm run test:coverage
+```
+
+The coverage command prints a summary and writes raw V8 coverage JSON to `.coverage/`.
+Remove previous `.coverage/coverage-*.json` files before collecting a new revision's coverage.
+
+`tests/api-search.test.js` imports the unchanged API library and injects Shell doubles to test
+search visibility, animation completion, type-to-search signals and app-grid spacing for the
+supported Shell version numbers. These are unit tests, not real GNOME Shell integration or
+end-to-end tests; the version matrix does not validate compatibility with actual Shell releases.
