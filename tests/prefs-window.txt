@@ -1,0 +1,29 @@
+Prefs window-controller contracts
+================================
+
+Run from the repository root with Node.js 22.7 or newer:
+
+    node --test tests/prefs-window.test.mjs
+
+Capture raw V8 unit coverage outside the checkout:
+
+    coverage_dir="$(mktemp -d)"
+    NODE_V8_COVERAGE="$coverage_dir" node --test --experimental-test-coverage \
+        --test-coverage-include='**/src/lib/Prefs/Prefs.js' \
+        tests/prefs-window.test.mjs
+
+The suite imports unchanged Prefs.js directly using Node's module syntax
+detection. It does not require package.json or the other pending test scaffolds.
+
+Injected widget, settings, display and resource doubles exercise window setup,
+settings initialization and callbacks, mapped values, profile selection,
+supported-row visibility, monitor sizing, actions, clipboard and close cleanup.
+Synthetic preference keys keep these controller tests separate from PrefsKeys
+metadata tests. Widget setters do not simulate GTK's signal-emission behavior;
+callbacks are invoked explicitly. Preset tests assert widget updates, not
+actual Gio persistence through GTK signals.
+
+These are offline unit contracts, not real GTK/GNOME Shell integration tests.
+No integration/E2E coverage output is available in the repository configuration
+or authorized GitHub mechanisms at the base revision. E2E coverage is unknown;
+there is no compatible raw E2E source to merge with this unit coverage.
