@@ -1,0 +1,27 @@
+Extension entry-point contracts
+
+Run from the repository root with Node.js 22.15+ (registerHooks support):
+
+    node --test tests/extension-entrypoint.test.mjs
+
+Generate raw V8 unit coverage outside the checkout:
+
+    coverage_dir="$(mktemp -d)"
+    NODE_V8_COVERAGE="$coverage_dir" node --test --experimental-test-coverage \
+        --test-coverage-include='**/src/extension.js' \
+        tests/extension-entrypoint.test.mjs
+
+The suite imports src/extension.js unchanged. Temporary Node module hooks
+substitute GI, Shell and library dependencies only for that entry point.
+Hooks and the temporary registry are removed after each import.
+
+Assertions cover dependency identity, interface-settings schema, shared
+extension settings, version parsing, startup/teardown order, idempotent
+disable, restart, instance isolation and cleanup after propagated startup
+errors. Cleanup is explicitly requested by the test caller; enable does not
+automatically recover from those errors.
+
+API, Manager and SupportNotifier method bodies are not executed. Shell
+version inputs test conversion and wiring, not actual GNOME Shell support.
+These offline unit tests do not establish integration/end-to-end coverage.
+No package manifest, shared runner or workflow changes are required.
