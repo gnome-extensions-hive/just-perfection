@@ -1,0 +1,25 @@
+Build-script contract tests
+===========================
+
+From the repository root:
+
+    python3 -B -m unittest discover -s tests -p 'test_build_script.py' -v
+
+Requires Python 3 and /bin/bash; no third-party Python packages or GNOME
+session are needed. The tests copy the production scripts/build.sh unchanged
+into temporary checkouts with spaces in their paths and invoke it from an
+unrelated directory. Temporary executable doubles replace only
+glib-compile-resources and gnome-extensions.
+
+Contracts include resource compilation and packaging arguments and order,
+repository-root working directory, default no-install behavior, optional
+and repeated installation, invalid flags, and compile/pack/install failures.
+Invalid flags currently fail after packaging; this suite preserves that
+behavior rather than changing the production script.
+
+The doubles record calls and create placeholder resources and archives to
+check sequencing. They do not validate resource XML, archive contents,
+translation compilation, actual GNOME CLI compatibility, or installation
+into a GNOME session. These are isolated orchestration tests, not real
+packaging integration tests or GNOME end-to-end coverage. No Bash line
+coverage is collected. Fixtures are removed automatically.
