@@ -1,0 +1,26 @@
+Preferences entry-point contracts
+===============================
+
+Requires Node.js 22.15+ or 23.5+ (module.registerHooks); no npm dependencies.
+Run from the repository root:
+
+    node --test tests/prefs-entrypoint.test.mjs
+
+Collect raw V8 coverage outside the checkout:
+
+    coverage_dir="$(mktemp -d)"
+    NODE_V8_COVERAGE="$coverage_dir" node --test --experimental-test-coverage \
+        --test-coverage-include='**/src/prefs.js' tests/prefs-entrypoint.test.mjs
+
+The suite imports unchanged src/prefs.js through temporary synchronous module
+hooks. GI modules, ExtensionPreferences, Prefs and PrefsKeys are recording
+doubles. The hooks are deregistered even when import fails. Each fixture uses
+distinct module URLs to isolate cached modules.
+
+Contracts cover dependency identities, version conversion, forwarding,
+construction order, fresh collaborators and propagation of initialization or
+delegation errors. These tests do not execute Prefs/PrefsKeys implementation
+bodies, real GTK rendering, real GSettings or a GNOME Shell session. Failure
+assertions establish propagation, not automatic recovery. Version inputs do
+not establish actual Shell compatibility. No integration/E2E coverage is
+collected; it cannot be inferred from the unit coverage report.
