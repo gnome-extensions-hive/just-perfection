@@ -1,0 +1,25 @@
+Translation update orchestration contracts
+=========================================
+
+Run from the repository root with Python 3 and Bash:
+
+    python3 -B -m unittest discover -s tests -p 'test_update_pot.py' -v
+
+The standard-library harness copies scripts/update-pot.sh unchanged into a
+temporary checkout. It runs the script from outside that checkout, including a
+space in the checkout path, and uses recording xgettext and msgmerge doubles.
+The normal find, GNU xargs, basename and grep utilities must be available on PATH.
+No gettext installation, GNOME session, network access or catalog edits in the
+real checkout are needed. Temporary fixtures and command logs are cleaned up.
+
+Contracts cover recursive JavaScript/UI input discovery, extraction options,
+repository-root execution, extraction-before-merge ordering, every catalog's
+in-place update arguments, progress output, new and existing fuzzy markers,
+warning ordering, and nonzero extraction/merge exits preventing later stages.
+GNU xargs maps the extractor's exit 37 to pipeline exit 123; a direct msgmerge
+failure retains exit 41.
+
+These tests verify Bash orchestration and controlled failure propagation, not
+real gettext parsing, translation quality, live GNOME behavior or end-to-end
+coverage. No Bash statement coverage is collected. This standalone command does
+not depend on other test branches or change shared runner configuration.
