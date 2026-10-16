@@ -36,4 +36,46 @@
 
 - Initial language translation for current languages has been translated via online services. Feel free to edit that.
 
+## Submitting Changes
+
+### Destination and Workflow
+
+Contributions to this repository are submitted via GitHub Pull Requests against the `main` branch.
+
+1. Fork the repository on GitHub: `gnome-extensions-hive/just-perfection`.
+2. Create a feature branch from the latest `main` branch.
+3. Commit your changes with clear, descriptive commit messages explaining the problem and solution.
+4. Push your branch to your personal fork.
+5. Open a Pull Request targeting the `main` branch of `gnome-extensions-hive/just-perfection`.
+
+### Pull Request Information
+
+When submitting a pull request, provide clear context to help maintainers review your changes:
+
+- **Summary of Changes**: Clearly explain what changes were made and why.
+- **Related Issues**: Reference any corresponding issue (e.g., `Closes #123` or `Fixes #123`).
+- **Testing and Verification**: Describe how you verified your changes and any testing performed.
+- **Screenshots or Recordings**: Include visual proof for user interface or styling modifications.
+
+### Pre-Submission Checks
+
+Before opening your pull request, please ensure:
+
+- **Coding Rules**: Your changes conform to the code style and architectural rules
+  listed above (such as the 100-character line margin, 4-space indentation,
+  newlines for opening braces, and keeping API interactions inside `lib/API.js`).
+- **Translation Updates**: If UI strings are modified or added, update the translation
+  templates if appropriate.
+- **Local Testing**: Test the extension locally to verify that your changes function
+  properly and introduce no regressions. If a build tool or linter is available in
+  your environment, verify that files parse cleanly.
+
+### Review Process
+
+- Once submitted, maintainers and automated checks will review your pull request.
+- Address any review comments promptly. You can push additional commits to your branch
+  to update the pull request.
+- Keep discussion constructive and focused on the code and user experience.
+
 *This file may be updated in the future. Any change should be applied to all files in this repository.*
+
