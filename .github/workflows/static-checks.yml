@@ -1,0 +1,34 @@
+name: Static checks
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  static-checks:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - name: Check JavaScript module syntax
+        run: |
+          while IFS= read -r -d '' file; do
+            node --input-type=module --check < "$file"
+          done < <(find src -type f -name '*.js' -print0)
+      - name: Check shell syntax
+        run: |
+          for file in scripts/build.sh scripts/update-pot.sh; do
+            bash -n "$file"
+          done
+      - name: Parse metadata and schema XML
+        run: |
+          python3 -m json.tool src/metadata.json > /dev/null
+          python3 -c 'import xml.etree.ElementTree as ET; ET.parse("src/schemas/org.gnome.shell.extensions.just-perfection.gschema.xml")'
