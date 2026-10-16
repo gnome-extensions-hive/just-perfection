@@ -505,7 +505,7 @@ export class Prefs
 
         for (let [, key] of Object.entries(this.#prefsKeys.keys)) {
 
-            if (!key.supported) {
+            if (!key.supported || Object.keys(key.profiles).length === 0) {
                 continue;
             }
 
@@ -559,6 +559,10 @@ export class Prefs
     #setValues(profile)
     {
         for (let [, key] of Object.entries(this.#prefsKeys.keys)) {
+
+            if (profile && key.profiles[profile] === undefined) {
+                continue;
+            }
 
             let widget = this.#builder.get_object(key.widgetId);
 
