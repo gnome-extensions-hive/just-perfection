@@ -124,6 +124,69 @@ $ ./scripts/build.sh -i
 
 *You need gettext and glib2-devel packages installed on your system*
 
+#### Activation and Session Reload
+
+After installing manually for the first time, GNOME Shell must restart or reload
+before it recognizes newly installed extension files. Once reloaded, enable the
+extension:
+
+1. **Reload GNOME Shell:**
+   - **X11 session:** Press `Alt + F2`, type `r`, and press `Enter` to restart
+     GNOME Shell without closing running applications.
+   - **Wayland session:** Restarting GNOME Shell in-place is not supported under
+     Wayland. You must log out of your desktop session and log back in (or run
+     GNOME Shell inside a nested session:
+     `dbus-run-session -- gnome-shell --nested --wayland`).
+
+2. **Enable the extension:**
+   Enable the extension using the `gnome-extensions` CLI tool:
+   ```bash
+   $ gnome-extensions enable just-perfection-desktop@just-perfection
+   ```
+   Alternatively, toggle it on using the **Extensions** (`gnome-extensions-app`)
+   graphical utility.
+
+#### Loading Source Changes During Development
+
+When modifying source code or assets in the repository:
+
+1. Rebuild and reinstall the package:
+   ```bash
+   $ ./scripts/build.sh -i
+   ```
+2. Reload GNOME Shell:
+   - On **X11**, press `Alt + F2`, type `r`, and press `Enter`.
+   - On **Wayland**, log out and log back in, or test within a nested GNOME Shell
+     instance. Simply disabling and re-enabling the extension does not reload
+     changed JavaScript modules or compiled resources in GNOME Shell.
+
+#### Verifying Activation and Diagnostics
+
+- **Observable check:** Confirm the extension is active and running:
+  ```bash
+  $ gnome-extensions info just-perfection-desktop@just-perfection
+  ```
+  Look for `State: ACTIVE`. You can also open extension preferences to verify:
+  ```bash
+  $ gnome-extensions prefs just-perfection-desktop@just-perfection
+  ```
+- **Troubleshooting & logs:** If the extension fails to activate or errors
+  occur, inspect GNOME Shell logs as documented in the
+  [bug report template](.gitlab/issue_templates/Bug.md):
+  ```bash
+  $ journalctl -fo cat /usr/bin/gnome-shell
+  ```
+  Check extension settings values with:
+  ```bash
+  $ gsettings --schemadir \
+    ~/.local/share/gnome-shell/extensions/just-perfection-desktop@just-perfection/schemas \
+    list-recursively org.gnome.shell.extensions.just-perfection
+  ```
+
+*(Note: The commands above require a running GNOME desktop environment with*
+*`gnome-shell` and `gnome-extensions` installed.)*
+
+
 ## Support
 
 You can support my work by sending me some crypto:
