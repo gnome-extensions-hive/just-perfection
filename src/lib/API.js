@@ -1754,6 +1754,8 @@ export class API
             this._startupCompleteSignal
             = layoutManager.connect('startup-complete', () => {
                 sessionMode.hasOverview = this.#originals['sessionModeHasOverview'];
+                delete(this.#originals['sessionModeHasOverview']);
+                delete(this._startupCompleteSignal);
             });
         }
     }
@@ -1771,7 +1773,11 @@ export class API
 
         if (this._startupCompleteSignal) {
             this._main.layoutManager.disconnect(this._startupCompleteSignal);
+            delete(this._startupCompleteSignal);
         }
+
+        this._main.sessionMode.hasOverview = this.#originals['sessionModeHasOverview'];
+        delete(this.#originals['sessionModeHasOverview']);
     }
 
     /**
